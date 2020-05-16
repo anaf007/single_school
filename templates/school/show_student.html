@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>发起请假</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/font.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/weadmin.css')}}">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+    <div class="weadmin-body">
+        <div class="layui-row">
+
+          {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash">
+                {% for message in messages %}
+                    <div class="alert alert-success" style="text-align: center">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        <strong>{{ message }}</strong>
+                      </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+            <div class="col-xs-6">
+                <form method="POST" enctype="multipart/form-data" action="{{url_for('school.add_student')}}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <input type="hidden" name="grade_id" value="{{grade_id}}">
+                    <div class="form-group">
+                    <div class="col-md-6"><input type="file" name="file" id="file"></div>
+                    <div class="col-md-6"><input type="submit" value="点击导入学生表格" class="btn btn-primary"></div>
+    
+                    </div>
+                    
+                </form>
+    
+            </div>
+
+            {%for i in result%}
+            <div class="layui-col-xs2">
+                <div class="thumbnail">
+                    {%if i[1].avatar%}
+                    <img src="{{url_for('public.get_student_img',student_img=i[1].avatar)}}" id='{{i[0].id}}'  width="150" height="150">
+                    {%else%}
+                    <img src="{{url_for('static',filename='images/icon6.png')}}" id='{{i[0].id}}' width="150" height="150">
+        
+                    {%endif%}
+                    
+                    <img src="{{ url_for('public.get_rq',rq_str=i[0].number_id) }}" width="150" height="150">
+                    <div class="caption">
+                        <h3><a href="#" onclick="if(confirm('确认删除吗？')==false)return false;">{{i[0].name}} </a>,{%if i[0].sex%} 男{%else%}女{%endif%}</h3>
+                        <p>{{i[0].number_id}}</p>
+                        <button class="layui-btn demoMore" lay-data="{id: '{{i[0].id}}'}"><i class="layui-icon"></i>更新照片</button>
+        
+                    </div>
+                 </div>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+  <script src="{{url_for('static',filename='layui/layui.js')}}" charset="utf-8"></script>
+  
+  <script type="text/javascript">
+
+
+    layui.use('upload', function(){
+      var upload = layui.upload;
+      
+      //同时绑定多个元素，并将属性设定在元素上
+      upload.render({
+        elem: '.demoMore'
+        ,url: '{{url_for("school.submit_students_img",_external=True)}}'
+        ,size: 1500 //限制文件大小，单位 KB
+        ,data: {id: '0'}
+        ,before: function(){
+          this.data.id = this.id,
+          layer.msg('文件上传中，请等待。'); 
+        }
+        ,done: function(res, index, upload){
+          document.getElementById(res.success[1]).src = "/get_student_img/"+res.success[0];
+    
+        }
+        ,error:function(){
+          alert('上传失败，请检查网络。');
+        }
+      });
+    
+    
+    });
+    
+    
+    </script>
+
+  </body>
+
+</html>·
+
+

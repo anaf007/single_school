@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>审批请假</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/font.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/weadmin.css')}}">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+    <div class="weadmin-body">
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash">
+                {% for message in messages %}
+                    <div class="alert alert-success" style="text-align: center">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        <strong>{{ message }}</strong>
+                      </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="layui-row">
+        <div class="layui-col-xs12 ask_body" >
+            {% for x in ask %}
+            <div class="layui-row">
+                <div class="layui-col-xs12" >姓名：{{x[2].name}}</div>
+                <div class="layui-col-xs12" >开始时间： {{x[0].start_at}}</div>
+                <div class="layui-col-xs12" > 结束时间：{{x[0].end_at}}</div>
+                <div class="layui-col-xs12" > 事由：{{x[0].reason}}</div>
+                <div class="layui-col-xs6" ><button type="button" class="layui-btn layui-btn-normal" onclick="submit({{x[0].id}},2)">同意</button>  </div>
+                <div class="layui-col-xs6" > <button type="button" class="layui-btn layui-btn-danger" onclick="submit({{x[0].id}},-1)">拒绝</button></div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+        
+    </div>
+
+    <script src="{{url_for('static',filename='js/jquery.min.js')}}" charset="utf-8"></script>
+<script>
+function submit(id,state){
+    $.ajax({
+        url: "{{url_for('school.update_ask_leave')}}?id="+id+"&state="+state,
+        type: 'post',
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+            alert(res.msg);
+            window.location.reload()
+        }
+    })
+}
+
+</script>
+
+<style>
+    .ask_body{
+        background-color:#f8f8f8;
+        margin:5px;
+        padding:5px;
+        font-size: 16px;
+    }
+</style>
+  </body>
+
+</html>

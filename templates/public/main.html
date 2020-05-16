@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>校园出入管理</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="{{url_for('static',filename='css/font.css')}}">
+		<link rel="stylesheet" href="{{url_for('static',filename='css/weadmin.css')}}">
+		
+
+	</head>
+
+	<body>
+		<div class="weadmin-body">
+			<blockquote class="layui-elem-quote">请选择下方快捷菜单</blockquote>
+			<div class="layui-fluid" style="overflow: hidden;">
+
+				{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					<ul class="flash">
+						{% for message in messages %}
+							<div class="alert alert-success" style="text-align: center">
+								<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+								<strong>{{ message }}</strong>
+							</div>
+						{% endfor %}
+					</ul>
+				{% endif %}
+			{% endwith %}
+	
+				<div class="layui-row layui-col-space15">
+					<div class="layui-col-md8">
+						<div class="layui-card">
+							<div class="layui-card-header">快捷方式</div>
+							<div class="layui-card-body">
+
+								<ul class="layui-row layui-col-space10 layui-this weadmin-shortcut">
+									<li class="layui-col-xs6">
+										<a href="{{url_for('user.members')}}" >
+											<i class="layui-icon"></i>
+											<cite>我的信息</cite>
+										</a>
+									</li>
+									<li class="layui-col-xs6">
+										<a href="{{url_for('school.ask_leave')}}" >
+											<i class="layui-icon"></i>
+											<cite>发起请假</cite>
+										</a>
+									</li>
+									<li class="layui-col-xs6">
+										<a href="{{url_for('school.update_ask_leave')}}" >
+											<i class="layui-icon"></i>
+											<cite>我的批准</cite>
+										</a>
+									</li>
+									<li class="layui-col-xs6">
+										<a href="#">
+											<i class="layui-icon"></i>
+											<cite>我的请假</cite>
+										</a>
+									</li>
+									
+
+								</ul>
+								
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			
+		</div>
+    </body>
+    <script type="text/javascript" src="{{url_for('static',filename='layui/layui.js')}}" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		layui.extend({
+			admin: '{/}../static/js/admin',
+		});
+		layui.use(['jquery', 'element','util', 'admin', 'carousel'], function() {
+			var element = layui.element,
+				$ = layui.jquery,
+				carousel = layui.carousel,
+				util = layui.util,
+				admin = layui.admin;
+			//建造实例
+			carousel.render({
+				elem: '.weadmin-shortcut'
+				,width: '100%' //设置容器宽度				
+				,arrow: 'none' //始终显示箭头	
+				,trigger: 'hover'
+				,autoplay:false
+			});
+			
+			carousel.render({
+				elem: '.weadmin-notice'
+				,width: '100%' //设置容器宽度				
+				,arrow: 'none' //始终显示箭头	
+				,trigger: 'hover'
+				,autoplay:true
+			});
+			
+		});
+	</script>
+
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>发起请假</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/font.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/weadmin.css')}}">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+    <div class="weadmin-body">
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash">
+                {% for message in messages %}
+                    <div class="alert alert-success" style="text-align: center">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        <strong>{{ message }}</strong>
+                      </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+        <form class="layui-form" method="post" onsubmit="return submit_form()">
+          <div class="layui-form-item">
+              <label for="username" class="layui-form-label">事由</label>
+              <div class="layui-input-inline">
+                  <input type="text" id="username" name="reason" class="layui-input">
+              </div>
+             
+          </div>
+
+          <div class="layui-form-item">
+            <label class="layui-form-label">快捷选项</label>
+            <div class="layui-input-block">
+              <input type="checkbox" name="reason_check" title="生病" value="生病"><div class="layui-unselect layui-form-checkbox"><span>生病</span><i class="layui-icon layui-icon-ok"></i></div>
+              <input type="checkbox" name="reason_check" title="外出" checked="" value="外出"><div class="layui-unselect layui-form-checkbox"><span>外出</span><i class="layui-icon layui-icon-ok"></i></div>
+              <input type="checkbox" name="reason_check" title="其他" value="其他"><div class="layui-unselect layui-form-checkbox"><span>其他</span><i class="layui-icon layui-icon-ok"></i></div>
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <label class="layui-form-label">开始时间</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="datetime" name="start_at" placeholder="请选择开始时间">
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <label class="layui-form-label">结束时间</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="datetime" name="end_at" placeholder="请选择开始时间">
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <label for="username" class="layui-form-label">学生</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ask_user" id="student" class="layui-input" placeholder="输入学生姓名或扫描校牌">
+            </div>
+           
+            <input type="hidden" name="student_id" value="">
+        </div>
+         
+          
+          <div class="layui-form-item">
+              <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+              <label for="L_repass" class="layui-form-label"></label>
+              <button  class="layui-btn" lay-filter="add" lay-submit="">增加</button>
+          </div>
+      </form>
+    </div>
+		<script src="{{url_for('static',filename='layui/layui.js')}}" charset="utf-8"></script>
+<script>
+layui.use('form', function(){
+var form = layui.form;
+});
+
+layui.use('laydate', function(){
+var laydate = layui.laydate;
+
+ //同时绑定多个
+ lay('#datetime').each(function(){
+    laydate.render({
+      elem: this
+      ,trigger: 'click'
+      ,type: 'datetime'
+    });
+  });
+});
+
+
+function submit_form(){
+    let student_name = document.getElementById('student').value;
+    let start_at = document.getElementsByName("start_at")[0].value
+    let end_at = document.getElementsByName("end_at")[0].value
+    if(!student_name){
+        return false;
+    }
+    if(!start_at){
+        return false;
+    }
+    if(!end_at){
+        return false;
+    }
+    return true;
+    
+}
+</script>
+  </body>
+
+</html>

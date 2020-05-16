@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>权限管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/font.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/weadmin.css')}}">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+    <div class="weadmin-body">
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash">
+                {% for message in messages %}
+                    <div class="alert alert-success" style="text-align: center">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        <strong>{{ message }}</strong>
+                      </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="layui-btn-group">
+        <!-- <button type="button" class="layui-btn layui-btn-sm"><i class="layui-icon"></i></button> -->
+        <!-- <button type="button" class="layui-btn layui-btn-sm"><i class="layui-icon"></i></button> -->
+        <!-- <button type="button" class="layui-btn layui-btn-sm"><i class="layui-icon"></i></button> -->
+		<button class="layui-btn" onclick="WeAdminShow('添加菜单','{{url_for('admin.role_handle')}}',800,450)"><i class="layui-icon">&#xe61f;</i>添加</button>
+
+      </div>
+
+    <div class="layui-form">
+        <table class="layui-table">
+          <colgroup>
+            <col width="150">
+            <col width="150">
+            <col width="200">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>名称</th>
+              <th>描述</th>
+              <th>排序</th>
+              <th>是否删除</th>
+              <th>创建时间</th>
+              <th>上级</th>
+              <th>操作</th>
+            </tr> 
+          </thead>
+          <tbody>
+            {% for x in role %}
+            <tr>
+              <td>{{x.id}}</td>
+              <td>{{x.name}}</td>
+              <td>{{x.remark}}</td>
+              <td>{{x.sort}}</td>
+              <td>{% if x.is_del %}是{% else %}否{% endif %}</td>
+              <td>{{x.create_at}}</td>
+              <td>{{x.pid}}</td>
+              <td> <button type="button" class="layui-btn"  onclick="WeAdminShow('角色绑定权限','{{url_for('admin.role_join_access')}}?role_id={{x.id}}',800,450)">绑定权限</button> </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script type="text/javascript" src="{{url_for('static',filename='layui/layui.js')}}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{url_for('static',filename='js/list.js')}}" charset="utf-8"></script>
+
+
+  </body>
+
+</html>

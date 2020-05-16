@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="{{url_for('auth.menu')}}" method="post">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+
+        标题：<input type="text" name="title" id=""> <br>
+        上级PID<input type="text" name="pid" id=""> <br>
+        是否启用：<input type="checkbox" name="status" id=""> <br>
+        排序<input type="sort" name="sort" id=""> <br>
+        是否路由：<input type="checkbox" name="is_url" id=""> <br>
+        路由地址：<input type="text" name="url" id=""> <br>
+       蓝图地址： <input type="text" name="blueprint" id=""> <br>
+       icon： <input type="text" name="icon" id=""> <br>
+        <input type="submit" value="submit">
+    </form>
+</body>
+</html>

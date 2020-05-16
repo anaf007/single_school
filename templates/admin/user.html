@@ -1,0 +1,117 @@
+
+
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/font.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/weadmin.css')}}">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+    <div class="weadmin-body">
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash">
+                {% for message in messages %}
+                    <div class="alert alert-success" style="text-align: center">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        <strong>{{ message }}</strong>
+                      </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+
+    <div class="layui-form">
+        <table class="layui-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>用户名</th>
+              <th>姓名</th>
+              <th>性别</th>
+              <th>头像</th>
+              <th>身份证号</th>
+              <th>创建时间</th>
+              <th>手机号码</th>
+              <th>联系地址</th>
+              <th>编号</th>
+              <th>是否激活</th>
+              <th>微信ID</th>
+            </tr> 
+          </thead>
+          <tbody>
+            {% for x in user %}
+            <tr>
+              <td>{{x.id}}</td>
+              <td>{{x.username}}</td>
+              <td>{{x.name}}</td>
+              <td>{% if x.sex %}男{% else %}女{% endif %}</td>
+              <td>
+                {%if x.avatar%}
+                <img src="{{url_for('public.get_student_img',student_img=x.avatar)}}" id='{{x.id}}'  width="50" height="50">
+                {% endif%}
+    
+              </td>
+              <td>{{x.id_card}}</td>
+              <td>{{x.create_at}}</td>
+              <td>{{x.phone}}</td>
+              <td>{{x.address}}</td>
+              <td>{{x.q_number}}</td>
+              <td>{% if x.active %}已激活{% else %}未激活{% endif %}</td>
+              <td>{{x.wechat_id}}</td>
+              
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="page">
+
+            <div>
+                
+    {% if paginate.has_prev %}
+    <a class="prev" href="{{url_for('admin.user')}}?page={{paginate.prev_num}}">&lt;&lt;</a>
+    {% endif %}
+
+{% for i in paginate.iter_pages() %}
+    {% if i %}
+        {% if i!=page%}
+        <a href="{{url_for('admin.user')}}?page={{i}}"  class="num">{{ i }}</a>
+        {% else %}
+        <span class="current">{{i}}</span>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+{% if paginate.has_next %}
+    <a class="next" href="{{url_for('admin.user')}}?page={{paginate.next_num}}">&gt;&gt;</a>
+{% endif %}
+
+                
+                
+            </div>
+        </div>
+
+      </div>
+    </div>
+    <script type="text/javascript" src="{{url_for('static',filename='layui/layui.js')}}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{url_for('static',filename='js/list.js')}}" charset="utf-8"></script>
+
+
+  </body>
+
+</html>
