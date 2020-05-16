@@ -100,6 +100,10 @@ def before_request(app):
     
     @app.before_request
     def app_before_request():
+        
+        if request.endpoint == None:
+            return 
+        
         # 排除的蓝图名称
         bp_name = ['static','auth.login']
         if request.endpoint in bp_name:
