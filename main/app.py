@@ -3,7 +3,7 @@
 import logging
 import sys,re
 
-from flask import Flask, render_template,request,session
+from flask import Flask, render_template,request,session,redirect
 
 from main import commands, public, user, auth,school,admin
 from main.extensions import (
