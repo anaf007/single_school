@@ -101,10 +101,10 @@ def before_request(app):
     @app.before_request
     def app_before_request():
         
-        if request.url.startswith('http://'):
-            url = request.url.replace('http://', 'https://', 1)
-            code = 301
-            return redirect(url, code=code)
+        # if request.url.startswith('http://'):
+        #     url = request.url.replace('http://', 'https://', 1)
+        #     code = 301
+        #     return redirect(url, code=code)
         
         if request.endpoint == None:
             return 
