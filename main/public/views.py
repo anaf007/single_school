@@ -114,7 +114,7 @@ def sms_code():
     if User.query.filter_by(phone=mobile).first():
         return jsonify({"msg":"该手机号已被注册"})
     send_result = requests.get(sms_code_url,data)
-    return jsonify({"msg":"验证码已发送，有效期为10分钟。"+str(code)})
+    return jsonify({"msg":"验证码已发送，有效期为10分钟。"})
 
 
 @blueprint.route("/verify_sms_code")
