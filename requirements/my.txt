@@ -27,7 +27,7 @@ Mako==1.1.2
 MarkupSafe==1.1.1
 marshmallow==3.5.2
 mysqlclient==1.4.6
-Pillow==7.1.2
+Pillow==8.3.2
 poyo==0.5.0
 psycopg2-binary==2.8.5
 pycparser==2.20
